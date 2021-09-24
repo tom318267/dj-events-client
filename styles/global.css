@@ -1,0 +1,29 @@
+@tailwind components;
+
+@layer components {
+  .Showcase {
+    background: url("/images/showcase.jpg") no-repeat center center;
+    height: 300px;
+    width: 100%;
+    position: relative;
+  }
+
+  .Showcase::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .Showcase * {
+    z-index: 20;
+  }
+
+  .EventSlug p {
+    margin: 10px 0;
+    font-size: 20px;
+  }
+}
