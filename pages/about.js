@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 const About = () => {
   return (
     <Layout title="About DJ Events">
-      <p>About</p>
+      <h1 className="text-2xl font-sanchez font-bold">About</h1>
     </Layout>
   );
 };

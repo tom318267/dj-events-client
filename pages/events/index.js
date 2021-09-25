@@ -2,7 +2,7 @@ import EventItem from "../../components/EventItem";
 import Layout from "../../components/Layout";
 import { API_URL } from "../../config/index";
 
-export default function EventsPage({ events }) {
+const EventsPage = ({ events }) => {
   return (
     <Layout>
       <h1 className="text-2xl mt-12 font-sanchez font-bold text-center sm:text-3xl">
@@ -15,7 +15,7 @@ export default function EventsPage({ events }) {
       ))}
     </Layout>
   );
-}
+};
 
 export async function getStaticProps() {
   const res = await fetch(`${API_URL}/events?_sort=date:ASC`);
@@ -26,3 +26,5 @@ export async function getStaticProps() {
     revalidate: 1,
   };
 }
+
+export default EventsPage;
