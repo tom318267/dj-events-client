@@ -1,22 +1,33 @@
 import React, { useState } from "react";
-import Layout from "../../components/Layout";
+import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { API_URL } from "../../config/index";
+import { API_URL } from "../../../config/index";
+import moment from "moment";
+import Image from "next/image";
+import { FaImage } from "react-icons/fa";
+import Modal from "../../../components/Modal";
+import ImageUpload from "../../../components/ImageUpload";
 
-const AddEvents = () => {
+const EditEventPage = ({ event }) => {
   const [values, setValues] = useState({
-    name: "",
-    performers: "",
-    venue: "",
-    address: "",
-    date: "",
-    time: "",
-    description: "",
+    name: event.name,
+    performers: event.performers,
+    venue: event.venue,
+    address: event.address,
+    date: event.date,
+    time: event.time,
+    description: event.description,
   });
+
+  const [showModal, setShowModal] = useState(false);
+
+  const [imagePreview, setImagePreview] = useState(
+    event.image ? event.image.formats.thumbnail.url : null
+  );
 
   const router = useRouter();
 
@@ -32,8 +43,8 @@ const AddEvents = () => {
       toast.error("Please fill in all fields");
     }
 
-    const res = await fetch(`${API_URL}/events`, {
-      method: "POST",
+    const res = await fetch(`${API_URL}/events/${event.id}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -45,10 +56,18 @@ const AddEvents = () => {
     } else {
       const event = await res.json();
 
-      console.log(event);
-
       router.push(`/events/${event.slug}`);
     }
+
+    setValues({
+      name: "",
+      performers: "",
+      venue: "",
+      address: "",
+      date: "",
+      time: "",
+      description: "",
+    });
   };
 
   const handleInputChange = (e) => {
@@ -60,6 +79,18 @@ const AddEvents = () => {
     });
   };
 
+  const imageUploaded = async (e) => {
+    const res = await fetch(`${API_URL}/events/${event.id}`);
+
+    const data = await res.json();
+
+    setImagePreview(data.image.formats.thumbnail.url);
+
+    setShowModal(false);
+
+    router.push("/");
+  };
+
   return (
     <Layout title="Add New Event">
       <div>
@@ -67,7 +98,7 @@ const AddEvents = () => {
           <FaArrowLeft />
           <Link href="/events">Go Back</Link>
         </div>
-        <h1 className="text-2xl font-sanchez font-bold mb-8">Add Event</h1>
+        <h1 className="text-2xl font-sanchez font-bold mb-8">Edit Event</h1>
         <ToastContainer />
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[30px]">
@@ -136,7 +167,7 @@ const AddEvents = () => {
                 type="date"
                 id="date"
                 name="date"
-                value={values.date}
+                value={moment(values.date).format("yyyy-MM-DD")}
                 onChange={handleInputChange}
               />
             </div>
@@ -170,14 +201,47 @@ const AddEvents = () => {
 
           <button
             type="submit"
-            className="bg-black w-full mt-4 flex items-center justify-center gap-2 text-white font-roboto text-md md:text-lg shadow-md py-2 px-6 lg:text-lg font-semibold rounded-full hover:shadow-xl active:scale-90 transition duration-150"
+            className="bg-black w-full my-4 flex items-center justify-center gap-2 text-white font-roboto text-md md:text-lg shadow-md py-2 px-6 lg:text-lg font-semibold rounded-full hover:shadow-xl active:scale-90 transition duration-150"
           >
-            Add Event
+            Update Event
           </button>
         </form>
+
+        <h2 className="text-lg font-bold">Event Image</h2>
+        {imagePreview ? (
+          <Image src={imagePreview} height={100} width={170} />
+        ) : (
+          <div>
+            <p>No image uploaded</p>
+          </div>
+        )}
       </div>
+
+      <div>
+        <button
+          onClick={() => setShowModal(true)}
+          className="bg-black w-[150px] my-4 flex items-center justify-center gap-2 text-white font-roboto text-md md:text-lg shadow-md py-2 px-6 lg:text-lg font-semibold rounded-full hover:shadow-xl active:scale-90 transition duration-150"
+        >
+          <FaImage /> Set Image
+        </button>
+      </div>
+
+      <Modal show={showModal} onClose={() => setShowModal(false)}>
+        <ImageUpload eventId={event.id} imageUploaded={imageUploaded} />
+      </Modal>
     </Layout>
   );
 };
 
-export default AddEvents;
+export async function getServerSideProps({ params: { id } }) {
+  const res = await fetch(`${API_URL}/events/${id}`);
+  const event = await res.json();
+
+  return {
+    props: {
+      event,
+    },
+  };
+}
+
+export default EditEventPage;

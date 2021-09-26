@@ -5,10 +5,27 @@ import { API_URL } from "../../config/index";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeftIcon } from "@heroicons/react/outline";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
 
 const EventPage = ({ event }) => {
-  const deleteEvent = (e) => {
-    console.log("delete");
+  const router = useRouter();
+
+  const deleteEvent = async (e) => {
+    if (confirm("Are you sure?")) {
+      const res = await fetch(`${API_URL}/events/${event.id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message);
+      } else {
+        router.push("/events");
+      }
+    }
   };
 
   return (
@@ -20,9 +37,9 @@ const EventPage = ({ event }) => {
               <FaPencilAlt /> Edit event
             </a>
           </Link>
+
           <a
-            href="#"
-            className="text-red-500 ml-[20px] text-md md:text-lg"
+            className="text-red-500 ml-[20px] cursor-pointer text-md md:text-lg"
             onClick={deleteEvent}
           >
             <FaTimes /> Delete Event
@@ -33,13 +50,14 @@ const EventPage = ({ event }) => {
           {new Date(event.date).toLocaleDateString("en-US")} at {event.time}
         </span>
         <h1 className="text-3xl font-bold mb-3">{event.name}</h1>
+        <ToastContainer />
         {event.image && (
           <div>
             <Image
-              src={event.image.formats.small.url}
+              src={event.image.url}
               width={960}
               height={600}
-              objectFit="cover"
+              objectFit="contain"
             />
           </div>
         )}
