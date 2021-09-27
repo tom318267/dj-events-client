@@ -9,7 +9,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function Header() {
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
@@ -27,22 +27,22 @@ export default function Example() {
                     />
                   </Link>
                 </div>
-                <div className="hidden lg:ml-6 md:flex md:space-x-8 lg:space-x-8">
+                <div className="hidden lg:ml-6 md:flex font-roboto md:space-x-8 lg:space-x-8">
                   {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <Link href="/">
-                    <a className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium">
                       Home
                     </a>
                   </Link>
 
                   <Link href="/about">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium">
                       About
                     </a>
                   </Link>
 
                   <Link href="/events/add">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium">
                       Add Event
                     </a>
                   </Link>
@@ -138,7 +138,7 @@ export default function Example() {
           </div>
 
           <Disclosure.Panel className="lg:hidden">
-            <div className="pt-2 pb-3 space-y-1">
+            <div className="pt-2 pb-3 space-y-1 font-roboto">
               {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800" */}
               <Link href="/">
                 <a className="border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 text-base font-medium">
@@ -160,7 +160,7 @@ export default function Example() {
                     alt=""
                   />
                 </div>
-                <div className="ml-3">
+                <div className="ml-3 font-roboto">
                   <div className="text-base font-medium text-gray-800">
                     Tom Cook
                   </div>
@@ -169,7 +169,7 @@ export default function Example() {
                   </div>
                 </div>
               </div>
-              <div className="mt-3 space-y-1">
+              <div className="mt-3 space-y-1 font-roboto">
                 <a
                   href="#"
                   className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"

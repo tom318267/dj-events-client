@@ -30,8 +30,8 @@ const EventPage = ({ event }) => {
 
   return (
     <Layout>
-      <div className="EventSlug flex flex-col justify-center relative pt-[80px]">
-        <div className="absolute top-0 right-0 xl:right-28 flex font-roboto justify-center">
+      <div className="EventSlug flex flex-col justify-center relative pt-[80px] font-roboto">
+        <div className="absolute top-0 right-0 xl:right-28 flex justify-center">
           <Link href={`/events/edit/${event.id}`}>
             <a className="text-blue-500 text-md md:text-lg">
               <FaPencilAlt /> Edit event
@@ -46,10 +46,10 @@ const EventPage = ({ event }) => {
           </a>
         </div>
 
-        <span className="text-lg">
+        <span className="text-lg font-sanchez">
           {new Date(event.date).toLocaleDateString("en-US")} at {event.time}
         </span>
-        <h1 className="text-3xl font-bold mb-3">{event.name}</h1>
+        <h1 className="text-3xl font-bold mb-3 font-sanchez">{event.name}</h1>
         <ToastContainer />
         {event.image && (
           <div>
