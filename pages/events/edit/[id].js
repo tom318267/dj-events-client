@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Layout from "../../../components/Layout";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -11,6 +11,7 @@ import Image from "next/image";
 import { FaImage } from "react-icons/fa";
 import Modal from "../../../components/Modal";
 import ImageUpload from "../../../components/ImageUpload";
+import AuthContext from "../../../context/AuthContext";
 
 const EditEventPage = ({ event }) => {
   const [values, setValues] = useState({
@@ -29,7 +30,11 @@ const EditEventPage = ({ event }) => {
     event.image ? event.image.formats.thumbnail.url : null
   );
 
+  const { user } = useContext(AuthContext);
+
   const router = useRouter();
+
+  useEffect(() => !user && router.push("/account/login"));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -233,9 +238,11 @@ const EditEventPage = ({ event }) => {
   );
 };
 
-export async function getServerSideProps({ params: { id } }) {
+export async function getServerSideProps({ params: { id }, req }) {
   const res = await fetch(`${API_URL}/events/${id}`);
   const event = await res.json();
+
+  console.log(req.headers.cookie);
 
   return {
     props: {

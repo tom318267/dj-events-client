@@ -1,15 +1,19 @@
-import { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import Image from "next/image";
 import Link from "next/link";
 import Search from "./Search";
+import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import AuthContext from "../context/AuthContext";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Header() {
+const Header = () => {
+  const { user, logout } = useContext(AuthContext);
+
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
@@ -28,24 +32,40 @@ export default function Header() {
                   </Link>
                 </div>
                 <div className="hidden lg:ml-6 md:flex font-roboto md:space-x-8 lg:space-x-8">
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                  <Link href="/">
-                    <a className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium">
-                      Home
+                  <Link href="/events">
+                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-black inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium">
+                      Events
                     </a>
                   </Link>
 
-                  <Link href="/about">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium">
-                      About
-                    </a>
-                  </Link>
-
-                  <Link href="/events/add">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium">
-                      Add Event
-                    </a>
-                  </Link>
+                  {user ? (
+                    // If logged in
+                    <>
+                      <Link href="/events/add">
+                        <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-black inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium">
+                          Add Event
+                        </a>
+                      </Link>
+                      <Link href="/account/dashboard">
+                        <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-black inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium">
+                          Dashboard
+                        </a>
+                      </Link>
+                      <a
+                        onClick={() => logout()}
+                        className="border-transparent text-gray-500 hover:border-gray-300 cursor-pointer hover:text-black inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium"
+                      >
+                        <FaSignOutAlt /> Logout
+                      </a>
+                    </>
+                  ) : (
+                    // If logged out
+                    <Link href="/account/login">
+                      <a className="border-transparent text-gray-500 gap-1 hover:border-gray-300 hover:text-black inline-flex items-center px-1 pt-1 border-b-2 text-md font-medium">
+                        <FaSignInAlt /> Login
+                      </a>
+                    </Link>
+                  )}
                 </div>
               </div>
               <div className="flex-1 flex items-center justify-center px-2 lg:ml-6 lg:justify-end">
@@ -195,4 +215,6 @@ export default function Header() {
       )}
     </Disclosure>
   );
-}
+};
+
+export default Header;

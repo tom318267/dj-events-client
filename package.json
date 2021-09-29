@@ -8,6 +8,7 @@
   "dependencies": {
     "@headlessui/react": "^1.4.1",
     "@heroicons/react": "^1.0.4",
+    "cookie": "^0.4.1",
     "moment": "^2.29.1",
     "next": "latest",
     "qs": "^6.10.1",
