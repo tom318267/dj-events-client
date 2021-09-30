@@ -19,7 +19,12 @@ const EventPage = ({ event }) => {
         <ToastContainer />
         {event.image && (
           <div className="my-4">
-            <Image src={event.image.url} width={960} height={600} />
+            <Image
+              src={event.image.url}
+              width={960}
+              height={600}
+              objectFit="contain"
+            />
           </div>
         )}
         <h3 className="text-3xl font-bold">Performers:</h3>
