@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Home({ events }) {
   return (
     <Layout>
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center relative">
         <h1 className="text-2xl mt-12 font-sanchez font-bold text-center sm:text-3xl">
           Upcoming Events
         </h1>
