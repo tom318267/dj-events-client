@@ -20,7 +20,7 @@ const EventPage = ({ event }) => {
         {event.image && (
           <div className="my-4">
             <Image
-              src={event.image.thumbnail.url}
+              src={event.image.url}
               width={960}
               height={600}
               objectFit="contain"
