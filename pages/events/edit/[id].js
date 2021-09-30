@@ -12,8 +12,9 @@ import { FaImage } from "react-icons/fa";
 import Modal from "../../../components/Modal";
 import ImageUpload from "../../../components/ImageUpload";
 import AuthContext from "../../../context/AuthContext";
+import { parseCookies } from "../../../helpers";
 
-const EditEventPage = ({ event }) => {
+const EditEventPage = ({ event, token }) => {
   const [values, setValues] = useState({
     name: event.name,
     performers: event.performers,
@@ -34,8 +35,6 @@ const EditEventPage = ({ event }) => {
 
   const router = useRouter();
 
-  useEffect(() => !user && router.push("/account/login"));
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -52,11 +51,16 @@ const EditEventPage = ({ event }) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(values),
     });
 
     if (!res.ok) {
+      if (res.status === 403 || res.status === 401) {
+        toast.error("Unauthorized");
+        return;
+      }
       toast.error("Something went wrong");
     } else {
       const event = await res.json();
@@ -232,21 +236,25 @@ const EditEventPage = ({ event }) => {
       </div>
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <ImageUpload eventId={event.id} imageUploaded={imageUploaded} />
+        <ImageUpload
+          eventId={event.id}
+          imageUploaded={imageUploaded}
+          token={token}
+        />
       </Modal>
     </Layout>
   );
 };
 
 export async function getServerSideProps({ params: { id }, req }) {
+  const { token } = parseCookies(req);
   const res = await fetch(`${API_URL}/events/${id}`);
   const event = await res.json();
-
-  console.log(req.headers.cookie);
 
   return {
     props: {
       event,
+      token,
     },
   };
 }

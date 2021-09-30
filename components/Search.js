@@ -18,7 +18,7 @@ const Search = () => {
       <form onSubmit={handleSubmit}>
         <input
           onChange={(e) => setTerm(e.target.value)}
-          className="w-[250px] h-[35px] p-[5px] border-2 rounded-md"
+          className="Search w-[250px] h-[35px] p-[5px] border-2 rounded-md"
           type="text"
           placeholder="Search Events"
         />

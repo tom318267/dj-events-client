@@ -18,7 +18,7 @@ export default function Home({ events }) {
 
         {events.length > 0 && (
           <Link href="/events">
-            <button className="bg-black w-[160px] lg:w-[180px] mt-4 flex items-center justify-center gap-2 text-white font-roboto text-md md:text-lg shadow-md py-2 px-6 lg:text-lg font-semibold rounded-full hover:shadow-xl active:scale-90 transition duration-150">
+            <button className="bg-black w-full lg:w-[180px] mt-4 flex items-center justify-center gap-2 text-white font-roboto text-md md:text-lg shadow-md py-2 px-6 lg:text-lg font-semibold rounded-full hover:shadow-xl active:scale-90 transition duration-150">
               View All
             </button>
           </Link>

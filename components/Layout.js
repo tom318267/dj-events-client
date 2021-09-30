@@ -1,14 +1,13 @@
 import React from "react";
 import Head from "next/head";
 import Header from "./Header";
-import Footer from "./Footer";
 import Showcase from "./Showcase";
 import { useRouter } from "next/dist/client/router";
 
 const Layout = ({ title, keywords, description, children }) => {
   const router = useRouter();
   return (
-    <div>
+    <div className="relative min-h-screen">
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -28,7 +27,6 @@ const Layout = ({ title, keywords, description, children }) => {
       {router.pathname === "/" && <Showcase />}
 
       <div className="m-[60px] overflow-hidden px-[30p]">{children}</div>
-      <Footer />
     </div>
   );
 };

@@ -6,8 +6,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { API_URL } from "../../config/index";
+import { parseCookies } from "../../helpers";
 
-const AddEvents = () => {
+const AddEvents = ({ token }) => {
   const [values, setValues] = useState({
     name: "",
     performers: "",
@@ -36,11 +37,16 @@ const AddEvents = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(values),
     });
 
     if (!res.ok) {
+      if (res.status === 403 || res.status === 401) {
+        toast.error("No token included");
+        return;
+      }
       toast.error("Something went wrong");
     } else {
       const event = await res.json();
@@ -179,5 +185,15 @@ const AddEvents = () => {
     </Layout>
   );
 };
+
+export async function getServerSideProps({ req }) {
+  const { token } = parseCookies(req);
+
+  return {
+    props: {
+      token,
+    },
+  };
+}
 
 export default AddEvents;
