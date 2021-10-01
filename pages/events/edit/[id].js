@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { API_URL } from "../../../config/index";
 import moment from "moment";
 import Image from "next/image";
